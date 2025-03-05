@@ -43,7 +43,7 @@ class ProductController extends Controller
     public function details($id)
     {
         $product = Product::findOrFail($id);
-        return response()->json($product);
+        return response()->($product);
     }
 
     // Search products

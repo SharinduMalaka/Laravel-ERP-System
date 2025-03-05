@@ -29,23 +29,32 @@ Route::view('/account', 'account')->name('account');
 
 //auth routes
 Route::post('/register', [AuthController::class, 'register'])->name('register');
-// Route::post('/login', [AuthController::class, 'login'])->name('login');
+Route::post('/login', [AuthController::class, 'login'])->name('login');
 Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
  
+Route::get('/', [HomeController::class, 'index'])->name('home');
+Route::get('products', [ProductController::class, 'index'])->name('products.list');
+Route::get('cart', [CartController::class, 'index'])->name('cart.index');
+Route::get('profile/edit', [ProfileController::class, 'edit'])->name('profile.edit');
+Route::post('logout', [AuthController::class, 'logout'])->name('logout');
+
+
 
 // cart routes
-Route::get('/cart', [CartController::class, 'showCart'])->name('cart.index');
+
 Route::post('/cart/add', [CartController::class, 'addToCart'])->name('cart.add');
-Route::post('/cart/remove/{productID}', [CartController::class, 'remove'])->name('cart.remove');
-Route::delete('/cart/clear', [CartController::class, 'clear'])->name('cart.clear');
-Route::post('/cart/update/{productID}', [CartController::class, 'update'])->name('cart.update');
+Route::get('/cart/view', [CartController::class, 'viewCart'])->name('cart.view');
+Route::post('cart/remove/{productID ?}', [CartController::class, 'removeFromCart'])->name('cart.remove');
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+
+
 
 // Define the search route
 Route::get('/products', [ProductController::class, 'index'])->name('products.index');
 Route::get('/search', [ProductController::class, 'search'])->name('products.search');
 
-Route::get('/products', [ProductController::class, 'index'])->name('products.index');
+Route::get('/products', [ProductController::class, 'index'])->name('products.list');
 Route::get('/products/{productID}', [ProductController::class, 'show'])->name('products.show');
 Route::get('/product-details/{productDescription}', [ProductController::class, 'details'])->name('products.details');
 
