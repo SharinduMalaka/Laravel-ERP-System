@@ -20,9 +20,9 @@ Route::get('/dashboard', function () {
 })->middleware(['auth', 'verified'])->name('dashboard');
 
 Route::middleware('auth')->group(function () {
-    Route::get('/home', [HomeController::class, 'index'])->name('home');
-
+    Route::get('/home', [HomeController::class, 'index'])->middleware('auth');
 });
+
 
 //account routes
 Route::view('/account', 'account')->name('account');
