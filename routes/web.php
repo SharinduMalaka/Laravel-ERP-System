@@ -23,6 +23,7 @@ Route::middleware('auth')->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->middleware('auth');
 });
 
+
 //account routes
 Route::view('/account', 'account')->name('account');
 
