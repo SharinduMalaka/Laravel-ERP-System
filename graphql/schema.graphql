@@ -1,0 +1,67 @@
+type Query {
+  "Fetch multiple products with optional filtering."
+  products(
+    query: String
+    min_price: Float
+    max_price: Float
+    category_id: ID
+  ): [Product!]! @field(resolver: "App\\GraphQL\\Queries\\ProductQuery@fetchProducts")
+
+  "Find a single product by ID."
+  product(id: ID!): Product! @find
+}
+
+type Mutation {
+  "Create a new product."
+  createProduct(input: CreateProductInput!): Product @field(resolver: "App\\GraphQL\\Mutations\\ProductMutation@store")
+}
+
+type Product {
+  "Unique ID for the product."
+  productID: varchar!
+
+  "Product name."
+  productName: varchar!
+
+  "Product price."
+  price: Int!
+
+  "Product quantity."
+  quantity: Int!
+
+  "Product brand."
+  brand: varchar!
+
+  "Category relation."
+  category: Category @belongsTo(relation: "category")
+
+  "Product images relation."
+  image: [ProductImage!]! @hasMany(relation: "images")
+}
+
+type Category {
+  "Unique ID for the category."
+  categoryID: ID!
+  
+  "Category name."
+  name: String!
+}
+
+type ProductImage {
+  "Unique ID for the product image."
+  id: ID!
+  
+  "Product ID."
+  productID: ID!
+  
+  "Image path."
+  imagePath: String!
+}
+
+input CreateProductInput {
+  categoryID: ID!
+  productName: String!
+  price: Float!
+  stock: Int!
+  productImage: Upload!
+}

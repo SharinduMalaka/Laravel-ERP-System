@@ -8,6 +8,7 @@ use App\Http\Controllers\CartController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\CustomerController;
+use Rebing\GraphQL\GraphQLController;
 
 
 
@@ -22,6 +23,18 @@ Route::get('/dashboard', function () {
 Route::middleware('auth')->group(function () {
     Route::get('/home', [HomeController::class, 'index'])->middleware('auth');
 });
+
+
+
+Route::match(['get', 'post'], '/graphql', [GraphQLController::class, 'query']);
+Route::match(['get', 'post'], '/graphql/batch', [GraphQLController::class, 'batch']);
+Route::match(['get', 'post'], '/graphql/ide', [GraphQLController::class, 'ide'])
+    ->middleware(['web', 'auth']);
+
+Route::get('/graphql-playground', function () {
+    return view('graphql-playground');
+});
+
 
 
 //account routes
