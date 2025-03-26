@@ -9,66 +9,58 @@ use Illuminate\Support\Facades\Session;
 
 class CartController extends Controller
 {
-
-    public function addToCart($productID)
+    // Add product to cart
+    public function addToCart(Request $request)
     {
-        $product = Product::findOrFail($productID);
+        $cart = Session::get('cart', []);
 
+        // Add the product details to the cart
+        $cart[] = [
+            'productID' => $request->productID,
+            'productName' => $request->productName,
+            'price' => $request->price,
+            'quantity' => $request->quantity,
+            'image' => $request->image
+        ];
+
+        // Store the updated cart in the session
+        Session::put('cart', $cart);
+
+        return response()->json(['success' => true, 'message' => 'Product added to cart']);
+    }
+
+    // View cart
+    public function viewCart()
+    {
+        $cart = session('cart', []);
+        return view('cart', compact('cart'));
+    }
+
+    // Remove product from the cart
+    public function removeFromCart($productID)
+    {
         $cart = session()->get('cart', []);
 
-        if (isset($cart[$productID])) {
-            $cart[$productID]['quantity']++;
-        } else {
-            $cart[$productID] = [
-                'name' => $product->productName,
-                'price' => $product->price,
-                'quantity' => 1,
-            ];
+        // Iterate through the cart and remove the product with the matching productID
+        foreach ($cart as $index => $item) {
+            if ($item['productID'] == $productID) {
+                unset($cart[$index]); // Unset the product
+                break; // Exit loop after removal
+            }
         }
+
+        // Reindex the cart to avoid gaps in the array
+        $cart = array_values($cart);
 
         session()->put('cart', $cart);
 
-        return redirect()->route('cart.index')->with('success', 'Product added to cart successfully!');
+        return redirect()->route('cart.view')->with('success', 'Product removed from cart.');
     }
 
-    // Update cart item quantity
-    public function update(Request $request, $productID)
+    // Index cart page
+    public function index()
     {
-        $cart = session()->get('cart', []);
-
-        if (isset($cart[$productID])) {
-            $quantity = (int) $request->input('quantity');
-            $cart[$productID]['quantity'] = max(1, $quantity);
-            session()->put('cart', $cart);
-        }
-
-        return redirect()->route('cart.index')->with('success', 'Cart updated successfully!');
+        $cart = session('cart', []);
+        return view('cart.index', compact('cart'));
     }
-
-    // Remove an item from the cart
-    public function remove($productID)
-    {
-        $cart = session()->get('cart', []);
-
-        if (isset($cart[$productID])) {
-            unset($cart[$productID]);
-            session()->put('cart', $cart);
-        }
-
-        return redirect()->route('cart.index')->with('success', 'Product removed from cart!');
-    }
-
-    // Clear the cart
-    public function clear()
-    {
-        session()->forget('cart');
-
-        return redirect()->route('cart.index')->with('success', 'Cart cleared!');
-    }
-
-        public function showCart()
-    {
-        return view('cart.index');
-    }
-
 }

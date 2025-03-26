@@ -80,30 +80,68 @@
                 <img src="storage/images/carrots.jpg" alt="Carrot" class="w-full h-40 object-cover rounded-t-lg">
                 <h3 class="text-lg font-bold mt-4">Carrot</h3>
                 <p class="text-gray-700">$1.00 each</p>
-                <button class="mt-2 w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">Add to Cart</button>
+                <button onclick="addToCart(1, 'Carrot', 1.00, 'storage/images/carrots.jpg')"
+        class="mt-2 w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">
+                Add to Cart
+            </button>
             </div>
             <!-- Repeat Product Cards -->
             <div class="bg-white p-4 rounded-lg shadow-lg hover:shadow-xl transition">
                 <img src="storage/images/banana.jpg" alt="Banana" class="w-full h-40 object-cover rounded-t-lg">
                 <h3 class="text-lg font-bold mt-4">Banana</h3>
                 <p class="text-gray-700">$0.50 each</p>
-                <button class="mt-2 w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">Add to Cart</button>
+                <button onclick="addToCart(1, 'Banana', 0.50 , 'storage/images/banana.jpg')"
+        class="mt-2 w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">
+                Add to Cart
+            </button>
             </div>
             <div class="bg-white p-4 rounded-lg shadow-lg hover:shadow-xl transition">
                 <img src="storage/images/milk.jpg" alt="Milk" class="w-full h-40 object-cover rounded-t-lg">
                 <h3 class="text-lg font-bold mt-4">Milk</h3>
                 <p class="text-gray-700">$3.00</p>
-                <button class="mt-2 w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">Add to Cart</button>
+                <button onclick="addToCart(1, 'Milk', 3.00, 'storage/images/milk.jpg')"
+        class="mt-2 w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">
+            Add to Cart
+        </button>
             </div>
             <div class="bg-white p-4 rounded-lg shadow-lg hover:shadow-xl transition">
                 <img src="storage/images/bread.jpg" alt="Bread" class="w-full h-40 object-cover rounded-t-lg">
                 <h3 class="text-lg font-bold mt-4">Bread</h3>
                 <p class="text-gray-700">$2.50</p>
-                <button class="mt-2 w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">Add to Cart</button>
+                <button onclick="addToCart(1, 'Bread', 2.50, 'storage/images/bread.jpg')"
+        class="mt-2 w-full bg-green-600 text-white py-2 rounded-lg hover:bg-green-700">
+                Add to Cart
+            </button>
             </div>
         </div>
     </div>
 </section>
+
+
+<script>
+    
+   function addToCart(productID, productName, price, quantity, image) {
+    fetch("{{ route('cart.add') }}", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json",
+            "X-CSRF-TOKEN": "{{ csrf_token() }}"
+        },
+        body: JSON.stringify({ 
+            productID, 
+            productName, 
+            price, 
+            quantity, 
+            image 
+        })
+    })
+    .then(response => response.json())
+    .then(data => alert(data.message))
+    .catch(error => console.error("Error:", error));
+}
+
+    
+</script>
 
 <!-- Newsletter Section -->
 <section class="relative py-12 overflow-hidden">

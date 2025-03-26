@@ -4,14 +4,15 @@
             <div class="flex">
                 <!-- Logo -->
                 <div class="shrink-0 flex items-center">
-                    <a href="{{ route('dashboard') }}">
-                        <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
+                    <a href="{{ url('/') }}">
+                        <span class="text-3xl font-bold tracking-wider text-green-600">SuperFresh.LK</span>
                     </a>
                 </div>
                 <div class="hidden space-x-8 sm:-my-px sm:ml-10 sm:flex">
-                    <x-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">
-                        {{ __('Dashboard') }}
-                    </x-nav-link>
+                    <a href="{{ url('/') }}" class="text-lg text-gray-800 hover:text-green-600">Home</a>
+                    <a href="{{ route('products.list') }}" class="text-lg text-gray-800 hover:text-green-600">Products</a>
+                    <a href="{{ route('cart.index') }}" class="text-lg text-gray-800 hover:text-green-600">Cart</a>
+                    <button onclick="location.href='/account'" class="bg-white text-green-600 px-4 py-2 rounded-lg hover:bg-gray-100">Account</button>
                 </div>
             </div>
 
@@ -55,7 +56,9 @@
     <!-- Responsive Navigation Menu -->
     <div :class="{ 'block': open, 'hidden': !open }" class="hidden sm:hidden">
         <div class="pt-2 pb-3 space-y-1">
-            <x-responsive-nav-link :href="route('dashboard')" :active="request()->routeIs('dashboard')">{{ __('Dashboard') }}</x-responsive-nav-link>
+            <a href="{{ url('/') }}" class="block text-lg text-gray-800 hover:text-green-600">Home</a>
+            <a href="{{ route('products.list') }}" class="block text-lg text-gray-800 hover:text-green-600">Products</a>
+            <a href="{{ route('cart.index') }}" class="block text-lg text-gray-800 hover:text-green-600">Cart</a>
         </div>
 
         <div class="pt-4 pb-1 border-t border-gray-200">
@@ -65,10 +68,10 @@
             </div>
 
             <div class="mt-3 space-y-1">
-                <x-responsive-nav-link :href="route('profile.edit')">{{ __('Profile') }}</x-responsive-nav-link>
+                <a href="{{ route('profile.edit') }}" class="block text-lg text-gray-800 hover:text-green-600">Profile</a>
                 <form method="POST" action="{{ route('logout') }}">
                     @csrf
-                    <x-responsive-nav-link href="#" onclick="event.preventDefault(); this.closest('form').submit();">{{ __('Log Out') }}</x-responsive-nav-link>
+                    <a href="#" class="block text-lg text-gray-800 hover:text-green-600" onclick="event.preventDefault(); this.closest('form').submit();">Log Out</a>
                 </form>
             </div>
         </div>
